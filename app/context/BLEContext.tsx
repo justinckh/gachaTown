@@ -1,11 +1,17 @@
-import { useCallback, useMemo, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 import { Alert, PermissionsAndroid, Platform } from "react-native";
 import { BleError, BleManager, Device, State } from "react-native-ble-plx";
 
-interface BluetoothLowEnergyApi {
-  requestPermissions(): Promise<boolean>;
-  scanForPeripherals(): void;
-  connectToDevice: (deviceId: Device) => Promise<boolean>;
+interface BLEContextType {
+  requestPermissions: () => Promise<boolean>;
+  scanForPeripherals: () => void;
+  connectToDevice: (device: Device) => Promise<boolean>;
   disconnectFromDevice: () => void;
   connectedDevice: Device | null;
   allDevices: Device[];
@@ -29,16 +35,18 @@ interface BluetoothLowEnergyApi {
   ) => Promise<void>;
 }
 
-function useBLE(): BluetoothLowEnergyApi {
+const BLEContext = createContext<BLEContextType | undefined>(undefined);
+
+export function BLEProvider({ children }: { children: React.ReactNode }) {
   const bleManager = useMemo(() => {
     try {
       return new BleManager();
     } catch (error) {
       console.error("Failed to initialize BleManager:", error);
-      // Return null to indicate initialization failure
       return null;
     }
   }, []);
+
   const [allDevices, setAllDevices] = useState<Device[]>([]);
   const [connectedDevice, setConnectedDevice] = useState<Device | null>(null);
   const [isScanning, setIsScanning] = useState(false);
@@ -160,7 +168,7 @@ function useBLE(): BluetoothLowEnergyApi {
     try {
       console.log("Starting connection to device:", device.id);
       const deviceConnection = await bleManager.connectToDevice(device.id, {
-        requestMTU: 512, // Request larger MTU for better data transfer
+        requestMTU: 512,
       });
       console.log("Connected to device");
 
@@ -321,17 +329,30 @@ function useBLE(): BluetoothLowEnergyApi {
     }
   };
 
-  return {
-    scanForPeripherals,
-    requestPermissions,
-    connectToDevice,
-    allDevices,
-    connectedDevice,
-    disconnectFromDevice,
-    isScanning,
-    discoverCharacteristics,
-    writeCharacteristicValue,
-  };
+  return (
+    <BLEContext.Provider
+      value={{
+        scanForPeripherals,
+        requestPermissions,
+        connectToDevice,
+        allDevices,
+        connectedDevice,
+        disconnectFromDevice,
+        isScanning,
+        discoverCharacteristics,
+        writeCharacteristicValue,
+      }}
+    >
+      {children}
+    </BLEContext.Provider>
+  );
 }
 
-export default useBLE;
+export function useBLE() {
+  const context = useContext(BLEContext);
+  if (context === undefined) {
+    throw new Error("useBLE must be used within a BLEProvider");
+  }
+  return context;
+}
+

@@ -1,3 +1,4 @@
+import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -11,9 +12,10 @@ import {
   View,
 } from "react-native";
 import { Device } from "react-native-ble-plx";
-import useBLE from "../hooks/useBLE";
+import CharacteristicsView from "../components/CharacteristicsView";
+import { useBLE } from "../context/BLEContext";
+import { useToys } from "../context/ToyContext";
 import { colors } from "../styles/colors";
-import CharacteristicsView from "./CharacteristicsView";
 
 interface DeviceListItemProps {
   device: Device;
@@ -48,7 +50,9 @@ const DeviceListItem: React.FC<DeviceListItemProps> = ({
   );
 };
 
-const BluetoothScreen: React.FC = () => {
+export default function AddToyScreen() {
+  const router = useRouter();
+  const { addToy } = useToys();
   const {
     requestPermissions,
     scanForPeripherals,
@@ -91,8 +95,38 @@ const BluetoothScreen: React.FC = () => {
     scanForPeripherals();
   };
 
-  const handleConnectToDevice = (device: Device) => {
-    connectToDevice(device);
+  const handleConnectToDevice = async (device: Device) => {
+    try {
+      const connected = await connectToDevice(device);
+      console.log("Connection result:", connected);
+
+      if (connected) {
+        // Create a new toy object
+        const newToy = {
+          id: device.id,
+          name: device.name || "Unknown Device",
+          battery: "100%",
+          status: "Active",
+          personality: "friendly",
+          parentalGuidance: true,
+          isNewlyConnected: true,
+        };
+
+        console.log("Adding new toy:", newToy);
+        addToy(newToy);
+
+        // Navigate back to home screen
+        if (router.canGoBack()) {
+          router.back();
+        }
+      }
+    } catch (error) {
+      console.error("Error connecting to device:", error);
+      Alert.alert(
+        "Connection Error",
+        "Failed to connect to the device. Please try again."
+      );
+    }
   };
 
   const renderDeviceItem = ({ item }: { item: Device }) => (
@@ -120,9 +154,6 @@ const BluetoothScreen: React.FC = () => {
     <SafeAreaView style={styles.container}>
       {!connectedDevice ? (
         <>
-          <View style={styles.header}>
-            <Text style={styles.title}>Bluetooth Devices</Text>
-          </View>
           <View style={styles.controls}>
             <TouchableOpacity
               style={[
@@ -181,7 +212,7 @@ const BluetoothScreen: React.FC = () => {
       )}
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -323,5 +354,3 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
 });
-
-export default BluetoothScreen;

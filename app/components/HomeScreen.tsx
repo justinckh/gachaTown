@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import {
@@ -11,6 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useToys } from "../context/ToyContext";
 import {
   borderRadius,
   colors,
@@ -41,12 +43,15 @@ interface HomeScreenProps {
 }
 
 export default function HomeScreen({
-  toys,
   onToySettings,
   onToyPress,
   onDiscovery,
   onAccount,
-}: HomeScreenProps) {
+}: Omit<HomeScreenProps, "toys">) {
+  const router = useRouter();
+  const { toys } = useToys();
+
+  console.log("HomeScreen toys:", toys);
   const handleSettingsPress = (toyId: string) => {
     onToySettings(toyId);
   };
@@ -174,7 +179,7 @@ export default function HomeScreen({
             </View>
             <Button
               title="添加玩具"
-              onPress={() => {}}
+              onPress={() => router.push("/(toy-stack)/add-toy")}
               variant="ghost"
               size="small"
               icon="add"
@@ -193,7 +198,18 @@ export default function HomeScreen({
                   ...(index === 0 ? styles.primaryToyCard : {}),
                 }}
               >
-                <TouchableOpacity onPress={() => onToyPress(toy.id)}>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (toy.isNewlyConnected) {
+                      router.push({
+                        pathname: "/(toy-stack)/toy-characteristics",
+                        params: { toyId: toy.id },
+                      });
+                    } else {
+                      onToyPress(toy.id);
+                    }
+                  }}
+                >
                   <View style={styles.toyCardContent}>
                     <View style={styles.toyCardLeft}>
                       <View style={styles.toyHeader}>

@@ -32,3 +32,6 @@ Add to your `ios/YourApp/Info.plist`:
 ## Usage
 
 The `useBLE` hook automatically handles runtime permission requests for both Android and iOS platforms.
+
+
+

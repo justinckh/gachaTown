@@ -9,6 +9,7 @@ import HomeScreen from "./components/HomeScreen";
 import LoginScreen from "./components/LoginScreen";
 import ToySettingsScreen from "./components/ToySettingsScreen";
 import ToyStatusScreen from "./components/ToyStatusScreen";
+import { useToys } from "./context/ToyContext";
 
 type Screen =
   | "login"
@@ -33,25 +34,7 @@ export default function Index() {
   const [currentScreen, setCurrentScreen] = useState<Screen>("login");
   const [selectedToyId, setSelectedToyId] = useState<string | null>(null);
 
-  // Store toy data with their settings
-  const [toys, setToys] = useState<ToyData[]>([
-    {
-      id: "toy1",
-      name: "Toy1",
-      battery: "85%",
-      status: "Active",
-      personality: "friendly",
-      parentalGuidance: true,
-    },
-    {
-      id: "toy2",
-      name: "Learning Robot",
-      battery: "67%",
-      status: "Standby",
-      personality: "educational",
-      parentalGuidance: true,
-    },
-  ]);
+  const { toys, updateToy } = useToys();
 
   const handleLogin = () => {
     setCurrentScreen("home");
@@ -99,11 +82,7 @@ export default function Index() {
     parentalGuidance: boolean;
   }) => {
     if (selectedToyId) {
-      setToys((prevToys) =>
-        prevToys.map((toy) =>
-          toy.id === selectedToyId ? { ...toy, ...updatedSettings } : toy
-        )
-      );
+      updateToy(selectedToyId, updatedSettings);
       console.log("Saving toy settings for:", selectedToyId, updatedSettings);
     }
   };
@@ -147,7 +126,6 @@ export default function Index() {
       <View style={styles.content}>
         {currentScreen === "home" && (
           <HomeScreen
-            toys={toys}
             onToySettings={handleToySettings}
             onToyPress={handleToyPress}
             onDiscovery={handleDiscovery}
