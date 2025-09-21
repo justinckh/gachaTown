@@ -8,17 +8,17 @@ Before you begin, ensure you have the following installed:
 
 - [Node.js](https://nodejs.org/) (v16 or later)
 - [npm](https://www.npmjs.com/) (v8 or later)
-- [Xcode](https://developer.apple.com/xcode/) (for iOS development)
+- [Xcode](https://developer.android.com/studio) (for iOS development)
 - [Android Studio](https://developer.android.com/studio) (for Android development)
 - [Expo CLI](https://docs.expo.dev/workflow/expo-cli/) (`npm install -g expo-cli`)
 - [eas-cli](https://docs.expo.dev/build/setup/) (`npm install -g eas-cli`)
 
-## Installation
+## Getting Started
 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/GachaTown.git
+   git clone https://github.com/justinckh/GachaTown.git
    cd GachaTown
    ```
 
@@ -42,170 +42,47 @@ Before you begin, ensure you have the following installed:
 
 ## Creating Development Builds
 
-### Prerequisites for Development Builds
-
-1. Install EAS CLI:
+1. Install EAS CLI and log in:
 
    ```bash
    npm install -g eas-cli
-   ```
-
-2. Log in to your Expo account:
-
-   ```bash
    eas login
    ```
 
-3. Configure your project:
-   ```bash
-   eas build:configure
-   ```
-
-### iOS Development Build
-
-1. Register your Apple Developer account in Expo:
-
-   ```bash
-   eas credentials
-   ```
-
-2. Configure your iOS development team in `app.json`:
-
-   ```json
-   {
-     "expo": {
-       "ios": {
-         "bundleIdentifier": "com.yourdomain.gachatown",
-         "developmentTeam": "YOUR_TEAM_ID"
-       }
-     }
-   }
-   ```
-
-3. Create a development build:
-
-   ```bash
-   eas build --profile development --platform ios
-   ```
-
-4. Install the development build:
-   - Download the .ipa file from the EAS build page
-   - Install using Xcode or Apple Configurator
-
-### Android Development Build
-
-1. Create a development build:
-
-   ```bash
-   eas build --profile development --platform android
-   ```
-
-2. Install the development build:
-   - Download the .apk file from the EAS build page
-   - Install on your Android device or emulator
-
-## Required Permissions
-
-### iOS
-
-Add the following to your `app.json`:
-
-```json
-{
-  "expo": {
-    "ios": {
-      "infoPlist": {
-        "NSBluetoothAlwaysUsageDescription": "This app uses Bluetooth to connect to nearby beacons for indoor positioning.",
-        "NSBluetoothPeripheralUsageDescription": "This app uses Bluetooth to connect to nearby beacons for indoor positioning.",
-        "NSLocationWhenInUseUsageDescription": "This app needs access to location to determine your position relative to beacons.",
-        "NSLocationAlwaysAndWhenInUseUsageDescription": "This app needs access to location to determine your position relative to beacons.",
-        "NSLocationAlwaysUsageDescription": "This app needs access to location to determine your position relative to beacons.",
-        "UIBackgroundModes": ["bluetooth-central", "location"]
-      }
-    }
-  }
-}
-```
-
-### Android
-
-Add the following to your `app.json`:
-
-```json
-{
-  "expo": {
-    "android": {
-      "permissions": [
-        "BLUETOOTH",
-        "BLUETOOTH_ADMIN",
-        "ACCESS_COARSE_LOCATION",
-        "ACCESS_FINE_LOCATION",
-        "BLUETOOTH_SCAN",
-        "BLUETOOTH_CONNECT"
-      ]
-    }
-  }
-}
-```
-
-## Deployment
-
-### Production Build
-
-1. Create a production build configuration:
-
-   ```bash
-   eas build:configure
-   ```
-
-2. Create production builds:
+2. Create development builds:
 
    ```bash
    # For iOS
-   eas build --platform ios --profile production
+   eas build --profile development --platform ios
 
    # For Android
-   eas build --platform android --profile production
+   eas build --profile development --platform android
    ```
 
-### App Store Deployment
-
-1. Create an App Store Connect application
-2. Configure your app's metadata and screenshots
-3. Submit for review:
-   ```bash
-   eas submit --platform ios
-   ```
-
-### Google Play Store Deployment
-
-1. Create a Google Play Console application
-2. Configure your app's metadata and screenshots
-3. Submit for review:
-   ```bash
-   eas submit --platform android
-   ```
+3. Install the development build:
+   - iOS: Install using Xcode or Apple Configurator
+   - Android: Install the APK on your device
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. Bluetooth Permission Issues
-
-   - Ensure all required permissions are properly configured in `app.json`
-   - Check device settings to ensure Bluetooth is enabled
-   - For iOS, verify that Location Services are enabled
-
-2. Build Errors
+1. Build Errors
 
    - Clear npm cache: `npm cache clean --force`
    - Delete node_modules and reinstall: `rm -rf node_modules && npm install`
    - Update Expo SDK: `expo upgrade`
 
-3. Simulator/Emulator Issues
+2. Simulator/Emulator Issues
+
    - Reset simulator/emulator
    - Clear app data
    - Reinstall the development build
+
+3. Permission Issues
+   - Ensure Bluetooth is enabled on your device
+   - Enable Location Services (required for Bluetooth scanning)
+   - Grant necessary permissions when prompted by the app
 
 ## Contributing
 
