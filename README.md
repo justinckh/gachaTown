@@ -1,51 +1,220 @@
-# Welcome to your Expo app 👋
+# GachaTown 🎮
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A mobile app that uses Bluetooth beacons for indoor positioning and navigation.
 
-## Get started
+## Prerequisites
 
-1. Install dependencies
+Before you begin, ensure you have the following installed:
 
+- [Node.js](https://nodejs.org/) (v16 or later)
+- [npm](https://www.npmjs.com/) (v8 or later)
+- [Xcode](https://developer.apple.com/xcode/) (for iOS development)
+- [Android Studio](https://developer.android.com/studio) (for Android development)
+- [Expo CLI](https://docs.expo.dev/workflow/expo-cli/) (`npm install -g expo-cli`)
+- [eas-cli](https://docs.expo.dev/build/setup/) (`npm install -g eas-cli`)
+
+## Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/yourusername/GachaTown.git
+   cd GachaTown
+   ```
+
+2. Install dependencies:
    ```bash
    npm install
    ```
 
-2. Start the app
+## Local Development
+
+1. Start the development server:
 
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+2. Open the app:
+   - Press `i` to open in iOS simulator
+   - Press `a` to open in Android emulator
+   - Scan the QR code with Expo Go app (iOS/Android) for testing on physical device
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Creating Development Builds
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Prerequisites for Development Builds
 
-## Get a fresh project
+1. Install EAS CLI:
 
-When you're ready, run:
+   ```bash
+   npm install -g eas-cli
+   ```
 
-```bash
-npm run reset-project
+2. Log in to your Expo account:
+
+   ```bash
+   eas login
+   ```
+
+3. Configure your project:
+   ```bash
+   eas build:configure
+   ```
+
+### iOS Development Build
+
+1. Register your Apple Developer account in Expo:
+
+   ```bash
+   eas credentials
+   ```
+
+2. Configure your iOS development team in `app.json`:
+
+   ```json
+   {
+     "expo": {
+       "ios": {
+         "bundleIdentifier": "com.yourdomain.gachatown",
+         "developmentTeam": "YOUR_TEAM_ID"
+       }
+     }
+   }
+   ```
+
+3. Create a development build:
+
+   ```bash
+   eas build --profile development --platform ios
+   ```
+
+4. Install the development build:
+   - Download the .ipa file from the EAS build page
+   - Install using Xcode or Apple Configurator
+
+### Android Development Build
+
+1. Create a development build:
+
+   ```bash
+   eas build --profile development --platform android
+   ```
+
+2. Install the development build:
+   - Download the .apk file from the EAS build page
+   - Install on your Android device or emulator
+
+## Required Permissions
+
+### iOS
+
+Add the following to your `app.json`:
+
+```json
+{
+  "expo": {
+    "ios": {
+      "infoPlist": {
+        "NSBluetoothAlwaysUsageDescription": "This app uses Bluetooth to connect to nearby beacons for indoor positioning.",
+        "NSBluetoothPeripheralUsageDescription": "This app uses Bluetooth to connect to nearby beacons for indoor positioning.",
+        "NSLocationWhenInUseUsageDescription": "This app needs access to location to determine your position relative to beacons.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "This app needs access to location to determine your position relative to beacons.",
+        "NSLocationAlwaysUsageDescription": "This app needs access to location to determine your position relative to beacons.",
+        "UIBackgroundModes": ["bluetooth-central", "location"]
+      }
+    }
+  }
+}
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Android
 
-## Learn more
+Add the following to your `app.json`:
 
-To learn more about developing your project with Expo, look at the following resources:
+```json
+{
+  "expo": {
+    "android": {
+      "permissions": [
+        "BLUETOOTH",
+        "BLUETOOTH_ADMIN",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "BLUETOOTH_SCAN",
+        "BLUETOOTH_CONNECT"
+      ]
+    }
+  }
+}
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Deployment
 
-## Join the community
+### Production Build
 
-Join our community of developers creating universal apps.
+1. Create a production build configuration:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
-# gachaTown
+   ```bash
+   eas build:configure
+   ```
+
+2. Create production builds:
+
+   ```bash
+   # For iOS
+   eas build --platform ios --profile production
+
+   # For Android
+   eas build --platform android --profile production
+   ```
+
+### App Store Deployment
+
+1. Create an App Store Connect application
+2. Configure your app's metadata and screenshots
+3. Submit for review:
+   ```bash
+   eas submit --platform ios
+   ```
+
+### Google Play Store Deployment
+
+1. Create a Google Play Console application
+2. Configure your app's metadata and screenshots
+3. Submit for review:
+   ```bash
+   eas submit --platform android
+   ```
+
+## Troubleshooting
+
+### Common Issues
+
+1. Bluetooth Permission Issues
+
+   - Ensure all required permissions are properly configured in `app.json`
+   - Check device settings to ensure Bluetooth is enabled
+   - For iOS, verify that Location Services are enabled
+
+2. Build Errors
+
+   - Clear npm cache: `npm cache clean --force`
+   - Delete node_modules and reinstall: `rm -rf node_modules && npm install`
+   - Update Expo SDK: `expo upgrade`
+
+3. Simulator/Emulator Issues
+   - Reset simulator/emulator
+   - Clear app data
+   - Reinstall the development build
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch: `git checkout -b feature/my-new-feature`
+3. Commit your changes: `git commit -am 'Add some feature'`
+4. Push to the branch: `git push origin feature/my-new-feature`
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.

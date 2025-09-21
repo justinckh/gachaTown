@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import AccountScreen from "./components/AccountScreen";
-import BluetoothScreen from "./components/BluetoothScreen";
 import BottomNavigation from "./components/BottomNavigation";
 import DailyQuestScreen from "./components/DailyQuestScreen";
 import DiscoveryScreen from "./components/DiscoveryScreen";
 import HomeScreen from "./components/HomeScreen";
+import LocationScreen from "./components/LocationScreen";
 import LoginScreen from "./components/LoginScreen";
 import ToySettingsScreen from "./components/ToySettingsScreen";
 import ToyStatusScreen from "./components/ToyStatusScreen";
@@ -19,7 +19,7 @@ type Screen =
   | "discovery"
   | "quest"
   | "account"
-  | "bluetooth";
+  | "location";
 
 interface ToyData {
   id: string;
@@ -62,8 +62,8 @@ export default function Index() {
     setCurrentScreen("quest");
   };
 
-  const handleBluetooth = () => {
-    setCurrentScreen("bluetooth");
+  const handleLocation = () => {
+    setCurrentScreen("location");
   };
 
   const handleHome = () => {
@@ -139,7 +139,7 @@ export default function Index() {
         {currentScreen === "account" && (
           <AccountScreen onHome={handleHome} onDiscovery={handleDiscovery} />
         )}
-        {currentScreen === "bluetooth" && <BluetoothScreen />}
+        {currentScreen === "location" && <LocationScreen />}
       </View>
 
       <BottomNavigation
@@ -149,13 +149,13 @@ export default function Index() {
             | "discovery"
             | "quest"
             | "account"
-            | "bluetooth"
+            | "location"
         }
         onHome={handleHome}
         onDiscovery={handleDiscovery}
         onQuest={handleQuest}
         onAccount={handleAccount}
-        onBluetooth={handleBluetooth}
+        onLocation={handleLocation}
       />
     </View>
   );

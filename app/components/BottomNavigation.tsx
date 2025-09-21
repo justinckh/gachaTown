@@ -17,12 +17,12 @@ import {
 } from "../styles/colors";
 
 interface BottomNavigationProps {
-  activeTab: "home" | "discovery" | "quest" | "account" | "bluetooth";
+  activeTab: "home" | "discovery" | "quest" | "account" | "location";
   onHome: () => void;
   onDiscovery: () => void;
   onQuest: () => void;
   onAccount: () => void;
-  onBluetooth: () => void;
+  onLocation: () => void;
 }
 
 export default function BottomNavigation({
@@ -31,7 +31,7 @@ export default function BottomNavigation({
   onDiscovery,
   onQuest,
   onAccount,
-  onBluetooth,
+  onLocation,
 }: BottomNavigationProps) {
   const NavButton = ({
     tab,
@@ -91,10 +91,10 @@ export default function BottomNavigation({
       />
       <NavButton tab="quest" onPress={onQuest} icon="trophy" label="任务" />
       <NavButton
-        tab="bluetooth"
-        onPress={onBluetooth}
-        icon="bluetooth"
-        label="蓝牙"
+        tab="location"
+        onPress={onLocation}
+        icon="location"
+        label="定位"
       />
       <NavButton tab="account" onPress={onAccount} icon="person" label="我的" />
     </View>

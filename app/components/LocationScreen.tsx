@@ -1,13 +1,15 @@
-import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
+  Dimensions,
+  Animated,
+  TouchableOpacity,
 } from "react-native";
 import { colors, shadows } from "../styles/colors";
+import { Ionicons } from "@expo/vector-icons";
 
 const LocationScreen: React.FC = () => {
   // Placeholder state for demo purposes
@@ -31,7 +33,7 @@ const LocationScreen: React.FC = () => {
             <View style={[styles.directionLine, styles.southLine]} />
             <View style={[styles.directionLine, styles.westLine]} />
           </View>
-
+          
           {/* Cardinal directions */}
           <Text style={[styles.cardinalDirection, styles.northLabel]}>N</Text>
           <Text style={[styles.cardinalDirection, styles.eastLabel]}>E</Text>
@@ -39,12 +41,7 @@ const LocationScreen: React.FC = () => {
           <Text style={[styles.cardinalDirection, styles.westLabel]}>W</Text>
 
           {/* Direction pointer */}
-          <View
-            style={[
-              styles.pointer,
-              { transform: [{ rotate: `${direction}deg` }] },
-            ]}
-          >
+          <View style={[styles.pointer, { transform: [{ rotate: `${direction}deg` }] }]}>
             <Ionicons name="arrow-forward" size={40} color={colors.primary} />
           </View>
         </View>
@@ -88,7 +85,7 @@ const styles = StyleSheet.create({
   },
   header: {
     padding: 16,
-    alignItems: "center",
+    alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
   },
@@ -104,8 +101,8 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 20,
   },
   mapCircle: {
@@ -114,38 +111,38 @@ const styles = StyleSheet.create({
     borderRadius: 150,
     backgroundColor: colors.white,
     ...shadows.lg,
-    alignItems: "center",
-    justifyContent: "center",
-    position: "relative",
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
   },
   directionLines: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
   },
   directionLine: {
-    position: "absolute",
+    position: 'absolute',
     backgroundColor: colors.borderLight,
     width: 1,
-    height: "100%",
-    left: "50%",
+    height: '100%',
+    left: '50%',
   },
   northLine: {
-    transform: [{ rotate: "0deg" }],
+    transform: [{ rotate: '0deg' }],
   },
   eastLine: {
-    transform: [{ rotate: "90deg" }],
+    transform: [{ rotate: '90deg' }],
   },
   southLine: {
-    transform: [{ rotate: "180deg" }],
+    transform: [{ rotate: '180deg' }],
   },
   westLine: {
-    transform: [{ rotate: "270deg" }],
+    transform: [{ rotate: '270deg' }],
   },
   cardinalDirection: {
-    position: "absolute",
+    position: 'absolute',
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
     color: colors.textSecondary,
   },
   northLabel: {
@@ -162,9 +159,9 @@ const styles = StyleSheet.create({
     left: 10,
   },
   pointer: {
-    position: "absolute",
-    alignItems: "center",
-    justifyContent: "center",
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   infoContainer: {
     padding: 20,
@@ -175,7 +172,7 @@ const styles = StyleSheet.create({
     padding: 16,
     ...shadows.md,
     marginBottom: 20,
-    alignItems: "center",
+    alignItems: 'center',
   },
   infoLabel: {
     fontSize: 14,
@@ -184,7 +181,7 @@ const styles = StyleSheet.create({
   },
   infoValue: {
     fontSize: 32,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: colors.primary,
   },
   beaconContainer: {
@@ -195,8 +192,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   beaconRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 12,
   },
   beaconIndicator: {
@@ -219,13 +216,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     borderRadius: 12,
     padding: 16,
-    alignItems: "center",
+    alignItems: 'center',
     ...shadows.sm,
   },
   calibrateButtonText: {
     color: colors.white,
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: '600',
   },
 });
 
