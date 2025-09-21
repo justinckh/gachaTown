@@ -27,6 +27,30 @@ Before you begin, ensure you have the following installed:
    npm install
    ```
 
+## iOS Development Setup
+
+1. Apple Developer Account
+
+   - Enroll in the [Apple Developer Program](https://developer.apple.com/programs/) (required for development on physical devices)
+   - Sign in to your Apple Developer account in Xcode (Xcode → Preferences → Accounts)
+
+2. Register Your Device
+
+   - Connect your iOS device to your Mac
+   - Open Xcode → Window → Devices and Simulators
+   - Click the '+' button to register your device
+   - Note your device's UDID (you'll need this for EAS)
+
+3. Configure EAS for iOS Development
+
+   ```bash
+   # Log in to your Expo account
+   eas login
+
+   # Register your device with EAS
+   eas device:create
+   ```
+
 ## Local Development
 
 1. Start the development server:
@@ -60,8 +84,12 @@ Before you begin, ensure you have the following installed:
    ```
 
 3. Install the development build:
-   - iOS: Install using Xcode or Apple Configurator
-   - Android: Install the APK on your device
+   - iOS:
+     - Download the .ipa file from EAS
+     - Install using Apple Configurator 2 or TestFlight
+     - Note: The app must be signed with your development team and the device must be registered
+   - Android:
+     - Download and install the APK on your device
 
 ## Troubleshooting
 
@@ -73,13 +101,20 @@ Before you begin, ensure you have the following installed:
    - Delete node_modules and reinstall: `rm -rf node_modules && npm install`
    - Update Expo SDK: `expo upgrade`
 
-2. Simulator/Emulator Issues
+2. iOS Device Not Recognized
+
+   - Ensure your device is registered in the Apple Developer portal
+   - Verify your device UDID is correctly registered with EAS
+   - Check that your Apple Developer account is active
+   - Trust your developer certificate on your iOS device (Settings → General → Device Management)
+
+3. Simulator/Emulator Issues
 
    - Reset simulator/emulator
    - Clear app data
    - Reinstall the development build
 
-3. Permission Issues
+4. Permission Issues
    - Ensure Bluetooth is enabled on your device
    - Enable Location Services (required for Bluetooth scanning)
    - Grant necessary permissions when prompted by the app
@@ -94,4 +129,4 @@ Before you begin, ensure you have the following installed:
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the LICENSE file for details
